@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Three.js</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block;align-content:center; }
+        span{display:block;}
+        div{display:block;}
+        .button {
+          background-color: violet;
+          color: white;
+          font-size: 16px;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          margin-right:10px;
+          margin-bottom:10px;
+        }
+
+        .button.clicked {
+          background-color: #2ecc71;
+        }
+        .upper{
+            font-size:x-large;
+            text-align: center;
+            background-image:url('https://st3.depositphotos.com/19694576/33764/i/450/depositphotos_337644702-stock-photo-festive-heart-banner-design-red.jpg');
+            background-size:cover;
+            width:100%;
+            animation:fadeInOut 1s linear infinite;
+        }
+        .image-container{
+
+            background-image:url('https://i.pinimg.com/originals/46/29/e4/4629e4a601b43f318fcd5715142ea085.gif');
+            background-size:contain;
+            text-align:center;
+            height:100px;
+        }
+        #button-container{
+            align-items: center;
+            background-image:url('https://st3.depositphotos.com/19694576/33764/i/450/depositphotos_337644702-stock-photo-festive-heart-banner-design-red.jpg');
+            background-size:contain;
+            justify-content:center;
+            display:flex;
+        }
+        #root{
+            text-align:center;
+            background-image:url("https://static.vecteezy.com/system/resources/thumbnails/001/349/581/small/valentine-s-banner-with-pink-paper-hearts-and-doodle-line-free-vector.jpg");
+            background-size:contain;
+        @keyframes fadeInOut {
+          0%, 100% {
+            opacity: 0; /* 初始和结束时，透明度为0 */
+          }
+          50% {
+            opacity: 1; /* 中间时，透明度为1 */
+          }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.min.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div class='upper'>
+
+        <p>I LOVE YOU</p>
+        <span>I LOVE YOU</span>
+        <h1>XZY，我喜欢你！</h1>
+
+        <div class='ls'>
+            <ls>一心</ls>
+            <ls>一意</ls>
+        </div>
+        <table border="1" style="visibility:hidden">
+            <caption>this is a table</caption>
+            <thead style="visibility:hidden">
+                <tr>
+                    <th>列1</th>
+                    <th>列2</th>
+                    <th>列3</th>
+                    <th>Col 4</th>
+                </tr>
+            </thead>
+            <tbody style="visibility:hidden">
+                <tr>
+                    <td>行1，列1</td>
+                    <td>行1，列2</td>
+                    <td>行1，列3</td>
+                </tr>
+                <tr>
+                    <td>行2，列1</td>
+                    <td>行2，列2</td>
+                    <td>行2，列3</td>
+                </tr>
+                <tr>
+                    <td>行3，列1</td>
+                    <td>行3，列2</td>
+                    <td>行3，列3</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="root">    
+    </div>
+    <div id="button-container"></div>
+    <div class="image-container">笨蛋大考拉！</div>
+    
+    <script type="text/babel">
+        // 创建一个简单的 React 组件
+        const App = () => {
+            return (
+                <div>
+                    <h1>我想你啦！</h1>
+                    <p>今天很想你</p>
+                </div>
+            );
+        };
+
+        // 使用 ReactDOM 将组件渲染到页面上
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+
+        class CoolButton extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            clicked: false
+          };
+        }
+
+        // 处理点击事件
+        handleClick = () => {
+          this.setState({ clicked: !this.state.clicked });
+        }
+
+        render() {
+          return (
+            <button 
+              className={this.state.clicked ? 'button clicked' : 'button'} 
+              onClick={this.handleClick}
+            >
+              {this.state.clicked ? '我也爱你！' : '你爱我吗？'}
+            </button>
+          );
+        }
+      }
+
+      const Button_array = () => {
+        return (
+          <div>
+            {[...Array(12)].map((_, index) => <CoolButton key={index} />)}
+          </div>
+        );
+      };
+
+      // 将组件渲染到页面上
+      ReactDOM.render(
+        <Button_array />,
+        document.getElementById('button-container')
+      );
+
+    </script>
+ 
+
+    <script>
+
+    function main(){
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+        const renderer = new THREE.WebGLRenderer();
+        //const loader = new THREE.GLTFLoader(); //type error, GLTFLoader is not a constructor
+        //console.log('main func is operating');    
+        gltf_render(renderer);
+        //load_model(scene,loader);
+        animate(scene,camera,renderer);
+    }
+
+    function gltf_render(renderer){
+        console.log('gltf is loading')
+        renderer.setSize(window.innerWidth/5, window.innerHeight/5);
+        document.body.appendChild(renderer.domElement);
+    }
+/*
+    function load_model(scene,loader){
+        loader.load('path_to_your_model.glb', //.glb might be incorrect format
+            (gltf) =>scene.add(gltf.scene), 
+            undefined, 
+            (error)=> console.error(error)
+            );
+        console.log('load_model func')
+    }
+*/
+    function animate(scene,camera,renderer) {
+                requestAnimationFrame(()=>animate(scene,camera,renderer));
+                renderer.render(scene, camera);
+    }
+    //main();
+
+    </script>
+</body>
+</html>
